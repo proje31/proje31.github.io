@@ -59,14 +59,7 @@ cursor:pointer;
 margin-left:10px;
 }
 
-#thanks{
-text-align:center;
-font-size:28px;
-margin-top:20px;
-display:none;
-}
-
-#bigThanks{
+.popup{
 position:fixed;
 top:50%;
 left:50%;
@@ -74,7 +67,18 @@ transform:translate(-50%,-50%);
 font-size:120px;
 font-weight:bold;
 display:none;
+}
+
+#thanksPopup{
 color:#00ff2a;
+}
+
+#watchPopup{
+color:#00ff2a;
+}
+
+#errorPopup{
+color:red;
 }
 
 .fullscreen .info{
@@ -113,26 +117,35 @@ display:none;
 <source src="ing video.mp4" type="video/mp4">
 </video>
 
-<div id="thanks">Thanks for watching</div>
-
 </div>
 
 </div>
 
-<div id="bigThanks">THANKS</div>
+<div id="thanksPopup" class="popup">THANKS</div>
+<div id="watchPopup" class="popup">THANKS FOR WATCHING</div>
+<div id="errorPopup" class="popup">ERROR</div>
 
 <script>
 
 const video = document.getElementById("videoPlayer");
-const thanks = document.getElementById("thanks");
 const container = document.getElementById("mainContainer");
 const scoreInput = document.getElementById("scoreInput");
-const bigThanks = document.getElementById("bigThanks");
+
+const thanksPopup = document.getElementById("thanksPopup");
+const watchPopup = document.getElementById("watchPopup");
+const errorPopup = document.getElementById("errorPopup");
 
 video.addEventListener("ended", function(){
+
 video.currentTime = 0;
 video.pause();
-thanks.style.display = "block";
+
+watchPopup.style.display="block";
+
+setTimeout(()=>{
+watchPopup.style.display="none";
+},2000);
+
 });
 
 document.addEventListener("fullscreenchange", function(){
@@ -148,17 +161,22 @@ function saveScore(){
 let value = scoreInput.value;
 
 if(value !== "100"){
-document.body.innerHTML="ERROR";
-setTimeout(()=>{location.reload()},1000);
+
+errorPopup.style.display="block";
+
+setTimeout(()=>{
+location.reload();
+},1200);
+
 return;
 }
 
 localStorage.setItem("projectScore", value);
 
-bigThanks.style.display="block";
+thanksPopup.style.display="block";
 
 setTimeout(()=>{
-bigThanks.style.display="none";
+thanksPopup.style.display="none";
 },2000);
 
 }
