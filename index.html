@@ -74,7 +74,7 @@ transform:translate(-50%,-50%);
 font-size:120px;
 font-weight:bold;
 display:none;
-color:white;
+color:#00ff2a;
 }
 
 .fullscreen .info{
@@ -99,7 +99,7 @@ display:none;
 <div class="score-box">
 <div>THE SCORE :</div>
 
-<input id="scoreInput" class="score-input" placeholder="100">
+<input id="scoreInput" class="score-input">
 
 <button class="score-btn" onclick="saveScore()">SAVE</button>
 
@@ -147,25 +147,28 @@ function saveScore(){
 
 let value = scoreInput.value;
 
-if(value != "100"){
-alert("Only 100 is allowed");
-scoreInput.value="";
+if(value !== "100"){
+document.body.innerHTML="ERROR";
+setTimeout(()=>{location.reload()},1000);
 return;
 }
 
 localStorage.setItem("projectScore", value);
 
-bigThanks.style.display = "block";
+bigThanks.style.display="block";
+
+setTimeout(()=>{
+bigThanks.style.display="none";
+},2000);
 
 }
 
-window.onload = function(){
+window.onload=function(){
 
-let saved = localStorage.getItem("projectScore");
+let saved=localStorage.getItem("projectScore");
 
 if(saved){
-scoreInput.value = saved;
-bigThanks.style.display = "block";
+scoreInput.value=saved;
 }
 
 }
