@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Video</title>
+
+<style>
+body{
+    margin:0;
+    background:#000;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial, sans-serif;
+}
+
+.container{
+    text-align:center;
+}
+
+video{
+    max-width:90vw;
+    max-height:80vh;
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
+}
+
+#thanks{
+    color:white;
+    font-size:28px;
+    margin-top:20px;
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<video id="videoPlayer" controls>
+<source src="ing video.mp4" type="video/mp4">
+Tarayıcınız video desteklemiyor.
+</video>
+
+<div id="thanks">
+Thanks for watching<br>
+İzlediğiniz için teşekkürler
+</div>
+
+</div>
+
+<script>
+
+const video = document.getElementById("videoPlayer");
+const thanks = document.getElementById("thanks");
+
+video.addEventListener("ended", function(){
+    video.currentTime = 0;
+    video.pause();
+    thanks.style.display = "block";
+});
+
+</script>
+
+</body>
+</html>
