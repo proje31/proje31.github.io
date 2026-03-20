@@ -1,52 +1,72 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Video</title>
+<title>Video Project</title>
 
 <style>
+
 body{
     margin:0;
-    background:#000;
+    background:#0b0b0b;
     height:100vh;
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     font-family:Arial, sans-serif;
+    color:white;
 }
 
 .container{
-    text-align:center;
+    display:flex;
+    align-items:center;
+    gap:60px;
+}
+
+.info{
+    font-size:18px;
+    line-height:35px;
 }
 
 video{
-    max-width:90vw;
-    max-height:80vh;
+    width:700px;
+    max-width:80vw;
     border-radius:10px;
-    box-shadow:0 0 20px rgba(0,0,0,0.8);
+    box-shadow:0 0 25px rgba(0,0,0,0.8);
 }
 
 #thanks{
-    color:white;
+    text-align:center;
     font-size:28px;
     margin-top:20px;
     display:none;
 }
+
+.fullscreen .info{
+    display:none;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="container" id="mainContainer">
 
+<div class="info">
+<div>NAME : BURHAN</div>
+<div>CLASS : 11-A</div>
+<div>NUMBER : 963</div>
+<div>TEACHERS NAME : MEHTAP</div>
+<div>PROJECT TOPIC : JOBS OF THE FUTURE</div>
+</div>
+
+<div>
 <video id="videoPlayer" controls>
 <source src="ing video.mp4" type="video/mp4">
-Tarayıcınız video desteklemiyor.
 </video>
 
-<div id="thanks">
-Thanks for watching<br>
-İzlediğiniz için teşekkürler
+<div id="thanks">Thanks for watching</div>
 </div>
 
 </div>
@@ -55,12 +75,24 @@ Thanks for watching<br>
 
 const video = document.getElementById("videoPlayer");
 const thanks = document.getElementById("thanks");
+const container = document.getElementById("mainContainer");
 
 video.addEventListener("ended", function(){
     video.currentTime = 0;
     video.pause();
     thanks.style.display = "block";
 });
+
+video.addEventListener("fullscreenchange", toggleInfo);
+document.addEventListener("fullscreenchange", toggleInfo);
+
+function toggleInfo(){
+    if(document.fullscreenElement){
+        container.classList.add("fullscreen");
+    }else{
+        container.classList.remove("fullscreen");
+    }
+}
 
 </script>
 
