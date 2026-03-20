@@ -7,43 +7,78 @@
 <style>
 
 body{
-    margin:0;
-    background:#0b0b0b;
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:Arial, sans-serif;
-    color:white;
+margin:0;
+background:#0b0b0b;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+font-family:Arial;
+color:white;
 }
 
 .container{
-    display:flex;
-    align-items:center;
-    gap:60px;
+display:flex;
+align-items:center;
+gap:60px;
 }
 
 .info{
-    font-size:18px;
-    line-height:35px;
+font-size:18px;
+line-height:35px;
 }
 
 video{
-    width:700px;
-    max-width:80vw;
-    border-radius:10px;
-    box-shadow:0 0 25px rgba(0,0,0,0.8);
+width:700px;
+max-width:80vw;
+border-radius:10px;
+box-shadow:0 0 25px rgba(0,0,0,0.8);
+}
+
+.score-box{
+margin-top:20px;
+}
+
+.score-input{
+width:80px;
+padding:10px;
+font-size:18px;
+text-align:center;
+border:none;
+border-radius:6px;
+}
+
+.score-btn{
+background:red;
+border:none;
+padding:10px 20px;
+color:white;
+font-size:16px;
+border-radius:6px;
+cursor:pointer;
+margin-left:10px;
 }
 
 #thanks{
-    text-align:center;
-    font-size:28px;
-    margin-top:20px;
-    display:none;
+text-align:center;
+font-size:28px;
+margin-top:20px;
+display:none;
+}
+
+#bigThanks{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:120px;
+font-weight:bold;
+display:none;
+color:white;
 }
 
 .fullscreen .info{
-    display:none;
+display:none;
 }
 
 </style>
@@ -54,44 +89,85 @@ video{
 <div class="container" id="mainContainer">
 
 <div class="info">
+
 <div>NAME : BURHAN</div>
 <div>CLASS : 11-A</div>
 <div>NUMBER : 963</div>
 <div>TEACHERS NAME : MEHTAP</div>
 <div>PROJECT TOPIC : JOBS OF THE FUTURE</div>
+
+<div class="score-box">
+<div>THE SCORE :</div>
+
+<input id="scoreInput" class="score-input" placeholder="100">
+
+<button class="score-btn" onclick="saveScore()">SAVE</button>
+
+</div>
+
 </div>
 
 <div>
+
 <video id="videoPlayer" controls>
 <source src="ing video.mp4" type="video/mp4">
 </video>
 
 <div id="thanks">Thanks for watching</div>
+
 </div>
 
 </div>
+
+<div id="bigThanks">THANKS</div>
 
 <script>
 
 const video = document.getElementById("videoPlayer");
 const thanks = document.getElementById("thanks");
 const container = document.getElementById("mainContainer");
+const scoreInput = document.getElementById("scoreInput");
+const bigThanks = document.getElementById("bigThanks");
 
 video.addEventListener("ended", function(){
-    video.currentTime = 0;
-    video.pause();
-    thanks.style.display = "block";
+video.currentTime = 0;
+video.pause();
+thanks.style.display = "block";
 });
 
-video.addEventListener("fullscreenchange", toggleInfo);
-document.addEventListener("fullscreenchange", toggleInfo);
+document.addEventListener("fullscreenchange", function(){
+if(document.fullscreenElement){
+container.classList.add("fullscreen");
+}else{
+container.classList.remove("fullscreen");
+}
+});
 
-function toggleInfo(){
-    if(document.fullscreenElement){
-        container.classList.add("fullscreen");
-    }else{
-        container.classList.remove("fullscreen");
-    }
+function saveScore(){
+
+let value = scoreInput.value;
+
+if(value != "100"){
+alert("Only 100 is allowed");
+scoreInput.value="";
+return;
+}
+
+localStorage.setItem("projectScore", value);
+
+bigThanks.style.display = "block";
+
+}
+
+window.onload = function(){
+
+let saved = localStorage.getItem("projectScore");
+
+if(saved){
+scoreInput.value = saved;
+bigThanks.style.display = "block";
+}
+
 }
 
 </script>
