@@ -59,14 +59,22 @@ cursor:pointer;
 margin-left:10px;
 }
 
-.popup{
+.overlay{
 position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:none;
+align-items:center;
+justify-content:center;
+z-index:999;
+}
+
+.popup{
 font-size:120px;
 font-weight:bold;
-display:none;
 }
 
 #thanksPopup{
@@ -121,9 +129,11 @@ display:none;
 
 </div>
 
+<div id="overlay" class="overlay">
 <div id="thanksPopup" class="popup">THANKS</div>
 <div id="watchPopup" class="popup">THANKS FOR WATCHING</div>
 <div id="errorPopup" class="popup">ERROR</div>
+</div>
 
 <script>
 
@@ -131,38 +141,54 @@ const video = document.getElementById("videoPlayer");
 const container = document.getElementById("mainContainer");
 const scoreInput = document.getElementById("scoreInput");
 
+const overlay = document.getElementById("overlay");
 const thanksPopup = document.getElementById("thanksPopup");
 const watchPopup = document.getElementById("watchPopup");
 const errorPopup = document.getElementById("errorPopup");
 
-video.addEventListener("ended", function(){
+function showPopup(element,time=2000){
 
-video.currentTime = 0;
-video.pause();
+overlay.style.display="flex";
 
-watchPopup.style.display="block";
+thanksPopup.style.display="none";
+watchPopup.style.display="none";
+errorPopup.style.display="none";
+
+element.style.display="block";
 
 setTimeout(()=>{
-watchPopup.style.display="none";
-},2000);
+overlay.style.display="none";
+element.style.display="none";
+},time);
+
+}
+
+video.addEventListener("ended",function(){
+
+video.currentTime=0;
+video.pause();
+
+showPopup(watchPopup);
 
 });
 
-document.addEventListener("fullscreenchange", function(){
+document.addEventListener("fullscreenchange",function(){
+
 if(document.fullscreenElement){
 container.classList.add("fullscreen");
 }else{
 container.classList.remove("fullscreen");
 }
+
 });
 
 function saveScore(){
 
-let value = scoreInput.value;
+let value=scoreInput.value;
 
-if(value !== "100"){
+if(value!=="100"){
 
-errorPopup.style.display="block";
+showPopup(errorPopup,1200);
 
 setTimeout(()=>{
 location.reload();
@@ -171,13 +197,9 @@ location.reload();
 return;
 }
 
-localStorage.setItem("projectScore", value);
+localStorage.setItem("projectScore",value);
 
-thanksPopup.style.display="block";
-
-setTimeout(()=>{
-thanksPopup.style.display="none";
-},2000);
+showPopup(thanksPopup);
 
 }
 
